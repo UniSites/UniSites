@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="一个本地运行的 Base64 编码、解码与交互式原理实验室。看清每 3 个字节如何变成 4 个字符。">
+    <title>Base64 Lab — 编码、解码与原理</title>
+    <link rel="stylesheet" href="./styles.css">
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#converter">跳到转换器</a>
+    <div class="page-grid" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="Base64 Lab 首页">
+        <span class="brand-mark">64</span>
+        <span class="brand-name">BASE64<br>LAB</span>
+      </a>
+      <nav class="main-nav" aria-label="页面导航">
+        <a href="#converter">转换器</a>
+        <a href="#principle">看原理</a>
+        <a href="#alphabet">字符表</a>
+      </nav>
+      <span class="local-badge"><span class="status-dot"></span>LOCAL ONLY</span>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow"><span>01</span> BINARY → TEXT, EXPLAINED</p>
+          <h1 id="hero-title">看见每一个<br><span>6-bit</span> 的旅程。</h1>
+          <p class="hero-intro">Base64 不是黑箱。输入一段文字，观察字节如何被重排、分组，再变成可以安全穿行的文本。</p>
+        </div>
+        <div class="hero-orbit" aria-label="Base64 将 3 字节转换为 4 个字符">
+          <div class="orbit-topline"><span>THE 24-BIT PRINCIPLE</span><span>RFC 4648</span></div>
+          <div class="orbit-equation">
+            <div class="byte-stack">
+              <span>8 bit</span><span>8 bit</span><span>8 bit</span>
+            </div>
+            <div class="equation-arrow" aria-hidden="true">
+              <span></span><b>RE-GROUP</b><span></span>
+            </div>
+            <div class="sextet-stack">
+              <span>6 bit</span><span>6 bit</span><span>6 bit</span><span>6 bit</span>
+            </div>
+          </div>
+          <div class="orbit-footer">
+            <div><strong>3</strong><span>BYTES IN</span></div>
+            <div class="ratio-line" aria-hidden="true"></div>
+            <div><strong>4</strong><span>CHARS OUT</span></div>
+            <span class="overhead-chip">+33.3% SIZE</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section converter-section" id="converter" aria-labelledby="converter-title">
+        <div class="section-heading">
+          <div><span class="section-number">01 / PLAYGROUND</span><h2 id="converter-title">编码 / 解码</h2></div>
+          <p>数据只留在当前浏览器，不经过服务器。</p>
+        </div>
+
+        <div class="workbench">
+          <div class="workbench-toolbar">
+            <div class="mode-switch" role="group" aria-label="转换模式">
+              <button class="mode-button is-active" type="button" data-mode="encode" aria-pressed="true">编码 <span>Encode</span></button>
+              <button class="mode-button" type="button" data-mode="decode" aria-pressed="false">解码 <span>Decode</span></button>
+            </div>
+            <div class="options" aria-label="Base64 选项">
+              <button class="option-switch" id="urlSafeToggle" type="button" role="switch" aria-checked="false">
+                <span class="switch-track" aria-hidden="true"><span></span></span>URL-safe
+              </button>
+              <button class="option-switch is-on" id="paddingToggle" type="button" role="switch" aria-checked="true">
+                <span class="switch-track" aria-hidden="true"><span></span></span>= 填充
+              </button>
+            </div>
+            <button class="text-button clear-button" id="clearButton" type="button">清空</button>
+          </div>
+
+          <div class="io-grid">
+            <div class="io-panel">
+              <div class="io-label"><label for="inputText" id="inputLabel">输入 · UTF-8 文本</label><span id="inputMeta">0 字符 · 0 bytes</span></div>
+              <textarea id="inputText" spellcheck="false" placeholder="在这里输入文字，例如：你好，世界 🌍" aria-describedby="statusMessage"></textarea>
+              <button class="sample-button" id="sampleButton" type="button"><span aria-hidden="true">↗</span> 填入一个示例</button>
+            </div>
+
+            <button class="swap-button" id="swapButton" type="button" aria-label="将输出作为输入，并切换转换方向" title="将输出作为输入，并切换方向" disabled>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h11m0 0-4-4m4 4-4 4M17 17H6m0 0 4 4m-4-4 4-4"/></svg>
+            </button>
+
+            <div class="io-panel output-panel">
+              <div class="io-label"><label for="outputText" id="outputLabel">输出 · Base64</label><span id="outputMeta">等待输入</span></div>
+              <textarea id="outputText" spellcheck="false" readonly placeholder="结果会实时出现在这里"></textarea>
+              <span class="output-note" id="outputNote">UTF-8 SAFE · REAL-TIME</span>
+            </div>
+          </div>
+
+          <div class="workbench-footer">
+            <div class="status-message" id="statusMessage" role="status" aria-live="polite"><span class="status-dot"></span><span>等待输入</span></div>
+            <button class="copy-button" id="copyButton" type="button" disabled>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="11" height="11" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>
+              <span>复制结果</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="section principle-section" id="principle" aria-labelledby="principle-title">
+        <div class="section-heading">
+          <div><span class="section-number">02 / UNDER THE HOOD</span><h2 id="principle-title">一次看懂 Base64</h2></div>
+          <p>下面的比特图会跟随转换器里的有效输入更新。</p>
+        </div>
+
+        <div class="bit-lab">
+          <div class="bit-lab-header">
+            <div><span class="live-pulse" aria-hidden="true"></span>LIVE BIT MAP</div>
+            <span id="sampleSource">默认示例 · Hi!</span>
+          </div>
+
+          <div class="pipeline-stage">
+            <div class="stage-label"><span>STEP 1</span><strong>取得原始字节</strong><small>文本先经过 UTF-8 编码</small></div>
+            <div class="byte-cards" id="byteCards"></div>
+          </div>
+
+          <div class="pipeline-connector" aria-hidden="true"><span></span>CONCATENATE<span></span></div>
+
+          <div class="pipeline-stage bit-stream-stage">
+            <div class="stage-label"><span>STEP 2</span><strong>连成比特流</strong><small id="bitStreamLabel">24 BITS</small></div>
+            <div class="bit-stream" id="bitStream" aria-label="输入字节的二进制表示"></div>
+          </div>
+
+          <div class="pipeline-connector" aria-hidden="true"><span></span>RE-GROUP BY 6<span></span></div>
+
+          <div class="pipeline-stage">
+            <div class="stage-label"><span>STEP 3</span><strong>每 6 位取一个值</strong><small>2⁶ = 64，映射到字符表</small></div>
+            <div class="sextet-cards" id="sextetCards"></div>
+          </div>
+
+          <div class="bit-lab-footer">
+            <span>保留填充时，输出长度 = <strong>4 × ⌈字节数 / 3⌉</strong></span>
+            <span class="mono" id="sampleHex">48 69 21</span>
+          </div>
+        </div>
+
+        <div class="concept-grid">
+          <article class="concept-card concept-blue">
+            <span class="concept-index">A / DENSITY</span>
+            <div class="concept-big">2<sup>6</sup><span>= 64</span></div>
+            <h3>为什么偏偏是 64？</h3>
+            <p>6 个二进制位恰好能表示 64 个不同数值。为每个数值指定一个可打印 ASCII 字符，就得到了 Base64 字母表。</p>
+          </article>
+          <article class="concept-card concept-lime">
+            <span class="concept-index">B / OVERHEAD</span>
+            <div class="concept-big">4/3<span>≈ 1.333</span></div>
+            <h3>为什么会变大？</h3>
+            <p>每 24 位原始数据仍保留全部信息，却改由 4 个文本字符承载。未压缩时，编码后的字符数约为原字节数的 4/3。</p>
+          </article>
+          <article class="concept-card concept-ink">
+            <span class="concept-index">C / SECURITY</span>
+            <div class="concept-big">≠<span>ENCRYPTION</span></div>
+            <h3>编码不是加密</h3>
+            <p>Base64 没有密钥，也不提供机密性。任何人都能还原内容；需要保密时，应使用经过验证的加密方案。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section alphabet-section" id="alphabet" aria-labelledby="alphabet-title">
+        <div class="section-heading">
+          <div><span class="section-number">03 / THE ALPHABET</span><h2 id="alphabet-title">64 个位置，一张对照表</h2></div>
+          <p>索引就是每组 6 位二进制数的十进制值。</p>
+        </div>
+        <div class="alphabet-board">
+          <div class="alphabet-legend">
+            <span><i class="legend-upper"></i>00–25 · A–Z</span>
+            <span><i class="legend-lower"></i>26–51 · a–z</span>
+            <span><i class="legend-digit"></i>52–61 · 0–9</span>
+            <span><i class="legend-special"></i>62–63 · <b id="specialAlphabet">+ /</b></span>
+          </div>
+          <div class="alphabet-grid" id="alphabetGrid" aria-label="Base64 字符索引表"></div>
+          <div class="alphabet-note"><span class="note-dot"></span>转换结果中用到的字符会被点亮。URL-safe 模式仅替换最后两个字符。</div>
+        </div>
+      </section>
+
+      <section class="section faq-section" aria-labelledby="faq-title">
+        <div class="section-heading compact-heading">
+          <div><span class="section-number">04 / GOOD TO KNOW</span><h2 id="faq-title">再追问三个问题</h2></div>
+        </div>
+        <div class="faq-list">
+          <details>
+            <summary><span>01</span>UTF-8 和 Base64 有什么关系？<b aria-hidden="true">+</b></summary>
+            <p>UTF-8 把字符表示为字节，Base64 再把字节表示为有限的文本字符。两者解决不同问题。中文和 emoji 必须先变成 UTF-8 字节，才能进行 Base64 编码；解码时则反向恢复。</p>
+          </details>
+          <details>
+            <summary><span>02</span>末尾的 = 可以省略吗？<b aria-hidden="true">+</b></summary>
+            <p>原文字节数不是 3 的倍数时，最后一个分组不足 24 位，标准 Base64 用 1 个或 2 个 <code>=</code> 补齐到 4 个字符。部分协议允许省略填充；本工具解码时可识别有无填充，编码时则由你控制。</p>
+          </details>
+          <details>
+            <summary><span>03</span>URL-safe 改变了什么？<b aria-hidden="true">+</b></summary>
+            <p>标准 Base64 的 <code>+</code> 和 <code>/</code> 在 URL 中可能需要额外转义。URL-safe 变体分别换成 <code>-</code> 和 <code>_</code>，并常省略 <code>=</code>，适合放入 URL、文件名或令牌。</p>
+          </details>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div><span class="brand-mark small-mark">64</span><strong>BASE64 LAB</strong></div>
+      <p>字节进来，理解留下。</p>
+      <a href="https://www.rfc-editor.org/rfc/rfc4648" target="_blank" rel="noreferrer">按 RFC 4648 实现 <span aria-hidden="true">↗</span></a>
+    </footer>
+  </body>
+</html>
