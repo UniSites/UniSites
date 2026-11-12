@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="免费随机密码生成器（Random Password Generator）：在本地生成安全、唯一的随机密码，自定义长度、字符类型与易混淆字符。适用于密码管理器、多因素认证账户和日常密码（mima / password）创建。">
+    <meta name="keywords" content="随机密码,随机密码生成器,密码,mima,password,random password generator,password generator,安全密码">
+    <meta name="robots" content="index,follow">
+    <meta name="theme-color" content="#fafaf6">
+    <meta property="og:title" content="随机密码生成器 — Random Password Generator | UniSites">
+    <meta property="og:description" content="使用加密安全随机数，在浏览器本地生成高强度密码。不保存，不上传。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://unisites.github.io/UniSites/password/">
+    <link rel="canonical" href="https://unisites.github.io/UniSites/password/">
+    <title>随机密码生成器 — Random Password Generator | UniSites</title>
+    <link rel="stylesheet" href="./styles.css">
+    <script src="./app.js" defer></script>
+    <script type="application/ld+json">
+      {"@context":"https://schema.org","@type":"WebApplication","name":"UniSites 随机密码生成器","alternateName":"Random Password Generator","url":"https://unisites.github.io/UniSites/password/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any modern web browser","description":"在浏览器本地使用加密安全随机数生成随机密码，支持长度、字符类型与易混淆字符设置。","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#generator">跳到密码生成器</a>
+    <div class="page-grid" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <a class="brand" href="./" aria-label="随机密码生成器首页">
+        <span class="brand-mark">#</span>
+        <span class="brand-name">PASS<br>WORD</span>
+      </a>
+      <nav class="main-nav" aria-label="页面导航">
+        <a href="../">UniSites 首页</a>
+        <a href="../base64/">Base64</a>
+        <a href="#generator">生成器</a>
+        <a href="#security">安全原理</a>
+      </nav>
+      <span class="local-badge"><span class="status-dot"></span>LOCAL ONLY</span>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="eyebrow-mark">#</span>RANDOM PASSWORD GENERATOR</p>
+          <h1 id="hero-title">让密码，<br><span>真正随机。</span></h1>
+          <p class="hero-intro">一个打开即用的随机密码生成器。由浏览器的加密安全随机数驱动，为你的每个账户生成独立密码。</p>
+          <div class="hero-assurances"><span>无需登录</span><span>不会上传</span><span>免费使用</span></div>
+        </div>
+        <div class="random-console" aria-label="使用加密安全随机数生成密码">
+          <div class="console-topline"><span>SOURCE OF RANDOMNESS</span><span>WEB CRYPTO</span></div>
+          <div class="console-code">crypto.<strong>getRandomValues</strong>()</div>
+          <div class="random-cells" aria-hidden="true">
+            <span>7F</span><span>Q2</span><span>9A</span><span>!</span><span>4C</span><span>X8</span><span>1B</span><span>#</span><span>K5</span><span>0D</span><span>P9</span><span>%</span><span>2E</span><span>M6</span><span>R3</span><span>?</span>
+          </div>
+          <div class="console-footer"><span><i></i>CSPRNG INSIDE</span><span>NO MATH.RANDOM()</span></div>
+        </div>
+      </section>
+
+      <section class="section generator-section" id="generator" aria-labelledby="generator-title">
+        <div class="section-heading">
+          <div><span class="section-number">01 / GENERATOR</span><h2 id="generator-title">你的下一个随机密码</h2></div>
+          <p>调整任何选项，都会立即生成一个全新的密码。</p>
+        </div>
+
+        <div class="generator-shell">
+          <div class="result-pane">
+            <div class="result-topline"><label for="passwordOutput">GENERATED PASSWORD</label><span id="passwordLengthLabel">20 CHARACTERS</span></div>
+            <textarea id="passwordOutput" rows="3" readonly spellcheck="false" aria-label="生成的随机密码"></textarea>
+            <div class="result-actions">
+              <button class="copy-button" id="copyButton" type="button">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="11" height="11" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>
+                <span>复制密码</span>
+              </button>
+              <span class="copy-note">复制后请妥善保管</span>
+            </div>
+            <div class="strength-block">
+              <div class="strength-label"><span>密码强度估算</span><strong id="strengthLabel">很强</strong></div>
+              <div class="strength-meter" id="strengthMeter" role="meter" aria-label="密码强度" aria-valuemin="0" aria-valuemax="4" aria-valuenow="3">
+                <span></span><span></span><span></span><span></span>
+              </div>
+              <div class="entropy-label"><span id="entropyValue">约 126 bits 熵</span><span id="poolValue">字符池 86</span></div>
+            </div>
+          </div>
+
+          <div class="settings-pane">
+            <div class="length-setting">
+              <div class="length-label"><label for="lengthRange">密码长度</label><output id="lengthValue" for="lengthRange">20</output></div>
+              <input id="lengthRange" type="range" min="8" max="64" value="20" step="1">
+              <div class="range-labels"><span>8</span><span>64</span></div>
+            </div>
+            <fieldset class="character-settings">
+              <legend>包含字符</legend>
+              <label class="character-option"><span><strong>大写字母</strong><small>A–Z</small></span><input type="checkbox" data-set="uppercase" checked><i aria-hidden="true"></i></label>
+              <label class="character-option"><span><strong>小写字母</strong><small>a–z</small></span><input type="checkbox" data-set="lowercase" checked><i aria-hidden="true"></i></label>
+              <label class="character-option"><span><strong>数字</strong><small>0–9</small></span><input type="checkbox" data-set="numbers" checked><i aria-hidden="true"></i></label>
+              <label class="character-option"><span><strong>符号</strong><small>!@#$…</small></span><input type="checkbox" data-set="symbols" checked><i aria-hidden="true"></i></label>
+            </fieldset>
+            <label class="ambiguous-option"><input id="excludeAmbiguous" type="checkbox"><span><strong>排除易混淆字符</strong><small>I, l, 1, O, 0, o</small></span></label>
+          </div>
+
+          <div class="generator-footer">
+            <div class="status-message" id="statusMessage" role="status" aria-live="polite"><span class="status-dot"></span><span>密码已在此设备本地生成</span></div>
+            <button class="regenerate-button" id="regenerateButton" type="button">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7v5h-5M4 17v-5h5M6.1 8a7 7 0 0 1 11.7-1L20 12M4 12l2.2 5a7 7 0 0 0 11.7-1"/></svg>
+              再生成一个
+            </button>
+          </div>
+        </div>
+        <p class="privacy-note"><span aria-hidden="true">◎</span>密码只存在于当前页面中；刷新即改变，不写入本地存储，也不经过网络。</p>
+      </section>
+
+      <section class="section security-section" id="security" aria-labelledby="security-title">
+        <div class="section-heading">
+          <div><span class="section-number">02 / SECURITY, EXPLAINED</span><h2 id="security-title">随机，只是第一步。</h2></div>
+          <p>真正的账户安全，还取决于唯一性、保管方式与第二重验证。</p>
+        </div>
+
+        <div class="entropy-card">
+          <div class="entropy-copy">
+            <span class="card-kicker">THE ENTROPY PRINCIPLE</span>
+            <h3>更多可能，<br>更难猜测。</h3>
+            <p>密码熵用 bit 衡量猜测难度。未加额外约束时，长度为 <strong>L</strong>、字符池大小为 <strong>N</strong> 的密码，估算熵为：</p>
+            <div class="entropy-formula">E = L × log<sub>2</sub>(N)</div>
+            <p class="formula-note">每类至少含一个字符等规则会改变实际有效空间，因此页面显示的数值是便于比较的估算，而不是破解时间承诺。</p>
+          </div>
+          <div class="entropy-visual" aria-label="密码长度与字符池共同影响熵">
+            <div class="entropy-equation"><span id="lengthMirror">20</span><b>×</b><span>log<sub>2</sub>(<i id="poolMirror">86</i>)</span><b>=</b><strong id="entropyMirror">≈126</strong></div>
+            <div class="entropy-units"><span>长度</span><span>字符池</span><span>估算 bits</span></div>
+            <div class="entropy-scale"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+            <div class="entropy-caption"><span>MORE LENGTH</span><span>MORE POSSIBILITY</span></div>
+          </div>
+        </div>
+
+        <div class="security-grid">
+          <article><span class="security-index">A / RANDOMNESS</span><h3>为什么不用 Math.random()？</h3><p><code>Math.random()</code> 面向一般计算，并不承诺不可预测性。本工具使用 Web Crypto 的加密安全伪随机数生成器，并通过拒绝采样避免取模偏差。</p></article>
+          <article><span class="security-index">B / UNIQUENESS</span><h3>一个密码，只给一个账户</h3><p>再强的密码，一旦在数据泄露中暴露，也不该波及其他账户。使用密码管理器保存独立密码，并为重要账户开启多因素认证。</p></article>
+          <article><span class="security-index">C / MULTI-FACTOR</span><h3>给密码再加一道防线</h3><p>多因素认证（MFA）把密码与动态验证码、安全密钥等额外因素结合。即使密码意外泄露，第二重验证仍能显著降低账户被接管的风险。</p></article>
+        </div>
+      </section>
+
+      <section class="section faq-section" aria-labelledby="faq-title">
+        <div class="section-heading compact-heading"><div><span class="section-number">03 / GOOD PRACTICE</span><h2 id="faq-title">生成之后，怎么做？</h2></div></div>
+        <div class="faq-list">
+          <details><summary><span>01</span>密码越长越好吗？<b aria-hidden="true">+</b></summary><p>在字符池相同且随机性可靠的前提下，增加长度会快速扩大搜索空间。日常重要账户可优先选择 16–20 位或更长，同时遵守目标网站的长度与字符规则。</p></details>
+          <details><summary><span>02</span>应该排除所有符号吗？<b aria-hidden="true">+</b></summary><p>不需要。符号能扩大字符池，但部分系统会限制可接受的符号。遇到兼容性问题时，可以减少符号并适当增加长度；不要为了达到固定长度而重复使用同一个密码。</p></details>
+          <details><summary><span>03</span>这个页面会记住我的密码吗？<b aria-hidden="true">+</b></summary><p>不会。页面没有账号系统、数据库或网络提交，也不使用本地存储保存结果。需要长期保存时，请把密码放入可信的密码管理器，而不是依赖浏览器历史或截图。</p></details>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div><span class="brand-mark small-mark">#</span><strong>PASSWORD / UNISITES</strong></div>
+      <p>随机密码 · MIMA · PASSWORD</p>
+      <a href="../">返回 UniSites <span aria-hidden="true">↗</span></a>
+    </footer>
+  </body>
+</html>

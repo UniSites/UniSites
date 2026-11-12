@@ -3,8 +3,16 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="UniSites 是一个打开即用的网页小工具宇宙。探索 Base64 编码、解码与交互式原理实验室。">
-    <title>UniSites — 小工具，大有用途</title>
+    <meta name="description" content="UniSites 是打开即用的免费网页工具集，提供随机密码生成器（mima / password）、Base64 编码解码与交互式原理说明。无需注册，本地运行。">
+    <meta name="keywords" content="UniSites,网页工具,在线工具,随机密码,随机密码生成器,mima,password,Base64">
+    <meta name="robots" content="index,follow">
+    <meta name="theme-color" content="#fafaf6">
+    <meta property="og:title" content="UniSites — 小工具，大有用途">
+    <meta property="og:description" content="随机密码生成器、Base64 实验室，以及更多打开即用的网页小工具。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://unisites.github.io/UniSites/">
+    <link rel="canonical" href="https://unisites.github.io/UniSites/">
+    <title>UniSites — 随机密码、Base64 与实用网页工具</title>
     <link rel="stylesheet" href="./styles.css">
   </head>
   <body>
@@ -34,11 +42,11 @@
           <p class="hero-intro">UniSites 收集那些打开就能用、用完就明白的网页小工具。无需安装，不被打断，把注意力留给问题本身。</p>
           <div class="hero-actions">
             <a class="primary-link" href="#tools">探索工具 <span aria-hidden="true">↓</span></a>
-            <span class="hero-note"><span class="status-dot"></span>01 个工具已上线</span>
+            <span class="hero-note"><span class="status-dot"></span>02 个工具已上线</span>
           </div>
         </div>
 
-        <div class="universe" aria-label="UniSites 工具宇宙，当前包含 Base64 Lab">
+        <div class="universe" aria-label="UniSites 工具宇宙，当前包含 Base64 Lab 和随机密码生成器">
           <div class="universe-topline"><span>THE UNISITES UNIVERSE</span><span><i></i>LIVE</span></div>
           <div class="universe-canvas">
             <div class="orbit orbit-outer" aria-hidden="true"></div>
@@ -46,7 +54,7 @@
             <span class="axis axis-horizontal" aria-hidden="true"></span>
             <span class="axis axis-vertical" aria-hidden="true"></span>
             <span class="satellite satellite-one" aria-hidden="true">01</span>
-            <span class="satellite satellite-two" aria-hidden="true">{ }</span>
+            <a class="satellite satellite-two satellite-link" href="./password/" aria-label="打开随机密码生成器">#</a>
             <span class="satellite satellite-three" aria-hidden="true">↗</span>
             <a class="universe-core" href="./base64/" aria-label="打开 Base64 Lab">
               <span class="core-orbit" aria-hidden="true"></span>
@@ -61,7 +69,7 @@
 
       <section class="section tools-section" id="tools" aria-labelledby="tools-title">
         <div class="section-heading">
-          <div><span class="section-number">01 / THE TOOLBOX</span><h2 id="tools-title">现在，从 Base64 开始。</h2></div>
+          <div><span class="section-number">01 / THE TOOLBOX</span><h2 id="tools-title">两个小站，现在就能用。</h2></div>
           <p>每个小站，都专注于把一个常见问题做好。</p>
         </div>
 
@@ -94,6 +102,34 @@
               <div><small>33</small><strong>h</strong></div>
             </div>
             <div class="preview-footer"><span>3 BYTES IN</span><span>4 CHARS OUT</span></div>
+          </a>
+        </article>
+
+        <article class="featured-tool password-tool">
+          <div class="tool-copy">
+            <div class="tool-meta"><span>002</span><span>SECURITY &amp; PRIVACY</span><span class="online-chip">ONLINE</span></div>
+            <h3>Random<br><span>Password</span></h3>
+            <p>用加密安全随机数生成独立密码。自定义长度与字符类型，看清密码强度；不保存，不上传，不让秘密离开浏览器。</p>
+            <ul class="tool-features" aria-label="随机密码生成器功能">
+              <li>Web Crypto</li>
+              <li>8–64 位</li>
+              <li>强度估算</li>
+            </ul>
+            <a class="tool-link" href="./password/">打开随机密码生成器 <span aria-hidden="true">↗</span></a>
+          </div>
+
+          <a class="tool-preview password-preview" href="./password/" aria-label="进入随机密码生成器">
+            <div class="preview-topline"><span><i></i>SECURE RANDOMNESS</span><span>PASSWORD / 002</span></div>
+            <div class="password-demo-label">GENERATED LOCALLY · NEVER STORED</div>
+            <div class="password-dots" aria-hidden="true">••••••••••••••••••••</div>
+            <div class="password-meter" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+            <div class="password-meter-caption"><span>STRONG BY DESIGN</span><span>WEB CRYPTO</span></div>
+            <div class="password-stats">
+              <div><strong>8–64</strong><span>CHARACTERS</span></div>
+              <div><strong>CSPRNG</strong><span>RANDOM SOURCE</span></div>
+              <div><strong>0</strong><span>PASSWORDS SAVED</span></div>
+            </div>
+            <div class="preview-footer"><span>YOUR DEVICE</span><span>YOUR PASSWORD</span></div>
           </a>
         </article>
         <p class="next-tool-note"><span aria-hidden="true">✳</span>下一枚站点，留给另一个好问题。</p>
